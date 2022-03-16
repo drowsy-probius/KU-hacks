@@ -15,6 +15,7 @@ url만 가지고 있으면 블랙보드에 로그인 하지 않고도 출석처�
 ```
 - Request URL: 
 https://kulms.korea.ac.kr/webapps/bbgs-AttendantManagementSystem-BB5d3914f35b4ad/onlineAttendance
+bbgs-AttendantManagementSystem-{BB5d3914f35b4ad} 이 부분은 버전이 업그레이드되면 변경될 것으로 예상됨.
 
 - Request Method: 
 POST 또는 GET
