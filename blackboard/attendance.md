@@ -21,7 +21,7 @@ bbgs-AttendantManagementSystem-{BB5d3914f35b4ad} 이 부분은 버전이 업그�
 POST 또는 GET
 
 - payload: 
-course_id: {년도}{학기1|2}R{0136?}{학수번호}{분반} // 코스 목록에서 과목 이름 위에 표시되는 문자열
+course_id: {년도}{학기1|2}R{0136?}{학수번호}{분반} // courseId (api 참고). 코스 목록에서 과목 이름 위에 표시되는 문자열
 course_pk: {6자리 숫자} // 과목 세부 페이지의 주소에서 https://kulms.korea.ac.kr/ultra/courses/_{이부분}_1/cl/outline
 firstname: 김철수
 course_name: 221R [서울-학부]과목이름(영어 과목이름))-00분반 // 코스 목록에서 표시되는 과목 이름.
