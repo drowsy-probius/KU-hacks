@@ -21,14 +21,14 @@ POST 또는 GET
 
 - payload: 
 course_id: {년도}{학기1|2}R{0136?}{학수번호}{분반} // 코스 목록에서 과목 이름 위에 표시되는 문자열
-course_pk: {6자리 숫자} // 코스 세부목록 주소를 보면 https://kulms.korea.ac.kr/ultra/courses/_{이부분}_1/cl/outline
+course_pk: {6자리 숫자} // 과목 세부 페이지의 주소에서 https://kulms.korea.ac.kr/ultra/courses/_{이부분}_1/cl/outline
 firstname: 김철수
 course_name: 221R [서울-학부]과목이름(영어 과목이름))-00분반 // 코스 목록에서 표시되는 과목 이름.
-campus_nm: 안암 // 아마 안암/세종 일 것
+campus_nm: 안암 // 아마 안암 또는 세종 일 것
 class_st: yyyy-mm-dd HH:MM:00 // 시작 날짜.시간만 확인해서 항목을 확인하는 것으로 추정됨.
 class_en: yyyy-mm-dd HH:MM:00 // 끝 시간은 자동으로 정해지는 것 같은데 자세히 확인은 못했음. 그냥 제대로 채워넣는 것을 추천
 faculty: 학부
-user_id: {학번}
+user_id: {학번} // yyyyddnnnn
 department: {한글로 된 학과명} // eg. 컴퓨터학과
 ```
 
