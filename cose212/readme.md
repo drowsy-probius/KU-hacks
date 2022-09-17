@@ -6,4 +6,17 @@ VSCode에서 autoSave - afterDelay와 비슷하게 동작합니다.
 
 Tampermonkey 등으로 로드하면 됩니다.
 
+서버 관리자라면 
+```html
+<script src="https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/raw.js"></script>
+```
+또는
+```javascript
+const script = document.createElement("script");
+script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/raw.js";
+document.body.appendChild(script);
+```
+으로 추가해주면 됩니다.
+
 스크립트 사용으로 인한 책임은 사용자 본인에게 있습니다.
+
