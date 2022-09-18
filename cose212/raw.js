@@ -73,7 +73,7 @@ class AutoSaver {
     this.timer = setTimeout(async () => {
       this.validateLogin()
       .then(() => this.saveValue(problemName, editorValue, dueDate))
-      .catch(err => { // Handle uncaughted errors
+      .catch(err => { // Handle uncaught errors
         swal("Error on AutoSaver", JSON.stringify(err), "error");
       });
     }, this.sleepMs);
