@@ -9,43 +9,37 @@
 (function () {
   'use strict';
 
-  window.autoSaverTimer = -1;
-  window.autoSaverSleepMs = 500;
-  const autoSaver = async () => {
-    const isOutOfDue = (dueString) => {
+  class AutoSaver {
+    constructor() {
+      this.timer = -1;
+      this.sleepMs = 500;
+    }
+
+    isOutOfDue (dueString) {
       /** format: 2111-01-10 24:00 */
       const [, year, month, day, hours, minutes] = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(dueString);
       const dueDate = new Date(year, month - 1, day, hours, minutes);
       return Date.now() > dueDate;
     }
 
-    const hw_selected = vm.hw_selected;
-    const problem_selected = vm.problem_selected;
-    if (problem_selected === -1 || hw_selected === -1) return;
-    if (!("name" in problemSet[problem_selected]) || !("term" in problemSet[problem_selected])) return;
-    const problem_name = problemSet[problem_selected].name;
-    const due_date = problemSet[problem_selected].term;
-    if (isOutOfDue(due_date)) return;
-    const editorValue = editor.getValue();
-    if(editorValue.trim().length === 0) return;
-
-    clearInterval(window.autoSaverTimer);
-    window.autoSaverTimer = setTimeout(async () => {
+    async validateLogin () {
       const loginRes = await fetch(`/php/validate-login.php`, {
         method: "POST",
         cache: "no-cache"
       });
-      if (!loginRes.ok) return alert_login();
+      if (!loginRes.ok) return swal("Error on /php/validate-login.php", JSON.stringify(loginRes.status), "error");
       const userName = await loginRes.text();
       if (userName.length === 0) return alert_login();
-  
+    }
+
+    async saveValue (problemName, editorValue, dueDate) {
       const params = {
-        problem: problem_name,
+        problem: problemName,
         contents: editorValue,
-        due: due_date,
+        due: dueDate,
       }
       const formBody = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join("&");
-  
+
       const saveRes = await fetch(`/php/save.php`, {
         method: "POST",
         cache: "no-cache",
@@ -54,10 +48,8 @@
         },
         body: formBody,
       });
-  
-      if (!saveRes.ok) {
-        return swal("Submit Error", JSON.stringify(await saveRes.text()), "error");
-      }
+
+      if (!saveRes.ok) return swal("Error on /php/save.php", JSON.stringify(saveRes.status), "error");
       const saveResData = await saveRes.text();
       switch (saveResData) {
         case "success":
@@ -75,10 +67,32 @@
           await swal("Fail to save", "Try again to submit your code. If the error is continuously occured, please contact us.", "error");
           return editor.focus();
       }
-    }, window.autoSaverSleepMs);
+    }
+
+    async runner () {
+      const hw_selected = vm.hw_selected;
+      const problem_selected = vm.problem_selected;
+      if (problem_selected === -1 || hw_selected === -1) return;
+      if (!("name" in problemSet[problem_selected]) || !("term" in problemSet[problem_selected])) return;
+      const problemName = problemSet[problem_selected].name;
+      const dueDate = problemSet[problem_selected].term;
+      if (this.isOutOfDue(dueDate)) return;
+      const editorValue = editor.getValue();
+      if(editorValue.trim().length === 0) return;
+
+      clearInterval(this.timer);
+      this.timer = setTimeout(async () => {
+        this.validateLogin()
+        .then(() => this.saveValue(problemName, editorValue, dueDate))
+        .catch(err => { // Handle uncaughted errors
+          swal("Error on AutoSaver", JSON.stringify(err), "error");
+        });
+      }, this.sleepMs);
+    }
   }
 
-  // editor.on("input", autoSaver)
-  editor.on("change", autoSaver);
+  if(window.autoSaver) return;
+  window.autoSaver = new AutoSaver();
+  editor.on("change", window.autoSaver.runner.bind(window.autoSaver));
   console.log(`[AUTOSAVER] script loaded!`);
 })();
