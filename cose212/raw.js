@@ -80,7 +80,9 @@ class AutoSaver {
   }
 }
 
-if(window.autoSaver) return;
-window.autoSaver = new AutoSaver();
-editor.on("change", window.autoSaver.runner.bind(window.autoSaver));
-console.log(`[AUTOSAVER] script loaded!`);
+(() => {
+  if(window.autoSaver) return;
+  window.autoSaver = new AutoSaver();
+  editor.on("change", window.autoSaver.runner.bind(window.autoSaver));
+  console.log(`[AUTOSAVER] script loaded!`);
+})();
