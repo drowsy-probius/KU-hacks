@@ -8,12 +8,12 @@ Tampermonkey 등으로 로드하면 됩니다.
 
 서버 관리자라면 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/raw.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/autosaver.min.js" data-sourcecode="https://github.com/drowsy-probius/KU-hacks/blob/main/cose212/autosaver.js"></script>
 ```
 또는
 ```javascript
 const script = document.createElement("script");
-script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/raw.js";
+script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/autosaver.min.js";
 document.body.appendChild(script);
 ```
 으로 추가해주면 됩니다.

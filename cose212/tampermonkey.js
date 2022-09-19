@@ -9,6 +9,7 @@
 (function () {
   'use strict';
   const script = document.createElement("script");
-  script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/raw.js";
+  script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/autosaver.min.js";
+  script.setAttribute("data-sourcecode", "https://github.com/drowsy-probius/KU-hacks/blob/main/cose212/autosaver.js");
   document.body.appendChild(script);
 })();
