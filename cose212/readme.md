@@ -14,6 +14,7 @@ Tampermonkey 등으로 로드하면 됩니다.
 ```javascript
 const script = document.createElement("script");
 script.src = "https://cdn.jsdelivr.net/gh/drowsy-probius/KU-hacks@main/cose212/autosaver.min.js";
+script.setAttribute("data-sourcecode", "https://github.com/drowsy-probius/KU-hacks/blob/main/cose212/autosaver.js");
 document.body.appendChild(script);
 ```
 으로 추가해주면 됩니다.
