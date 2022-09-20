@@ -1,6 +1,6 @@
-class AutoSaverSwalError extends Error {
+class SwalFormatError extends Error {
   constructor(title, message, level, callback) {
-    super();
+    super(message);
     this.title = title;
     this.message = message;
     this.level = level;
@@ -29,9 +29,9 @@ class AutoSaver {
     const loginRes = await fetch(`/php/validate-login.php`, {
       method: "POST",
     });
-    if (!loginRes.ok) throw new AutoSaverSwalError(`Error on /php/validate-login.php`, JSON.stringify(loginRes.status), "error");
+    if (!loginRes.ok) throw new SwalFormatError(`Error on /php/validate-login.php`, JSON.stringify(loginRes.status), "error");
     const userName = await loginRes.text();
-    if (userName.length === 0) throw new AutoSaverSwalError(`Error on login`, `Name is null??`, "error", alert_login.bind(window));
+    if (userName.length === 0) throw new SwalFormatError(`Error on login`, `Name is null??`, "error", alert_login.bind(window));
   }
 
   async saveValue (problemName, editorValue, dueDate) {
@@ -47,18 +47,18 @@ class AutoSaver {
       }),
     });
 
-    if (!saveRes.ok) throw new AutoSaverSwalError(`Error on /php/save.php`, JSON.stringify(saveRes.status), "error");
+    if (!saveRes.ok) throw new SwalFormatError(`Error on /php/save.php`, JSON.stringify(saveRes.status), "error");
     const saveResData = await saveRes.text();
     switch (saveResData) {
       case "success": return; // 성공 값 명시
       case "abuse": 
-        throw new AutoSaverSwalError(`Catch system library`, `The program includes system call. Check your code and delete the usage of system modules`, `error`, editor.focus.bind(editor));
+        throw new SwalFormatError(`Catch system library`, `The program includes system call. Check your code and delete the usage of system modules`, `error`, editor.focus.bind(editor));
       case "length": 
-        throw new AutoSaverSwalError(`Limited length`, `Your code is too large. please reduce it`, `error`, editor.focus.bind(editor));
+        throw new SwalFormatError(`Limited length`, `Your code is too large. please reduce it`, `error`, editor.focus.bind(editor));
       case "over": 
-        throw new AutoSaverSwalError(`Over due date`, `Since the due date is over, submit function is closed.`, `error`, editor.focus.bind(editor));
+        throw new SwalFormatError(`Over due date`, `Since the due date is over, submit function is closed.`, `error`, editor.focus.bind(editor));
       default: 
-        throw new AutoSaverSwalError(`Fail to save`, `Try again to submit your code. If the error is continuously occured, please contact us.`, `error`, editor.focus.bind(editor));
+        throw new SwalFormatError(`Fail to save`, `Try again to submit your code. If the error is continuously occured, please contact us.`, `error`, editor.focus.bind(editor));
     }
   }
 
@@ -90,7 +90,7 @@ class AutoSaver {
       this.validateLogin()
       .then(() => this.saveValue(problemName, editorValue, dueDate))
       .catch(err => {
-        if(err instanceof AutoSaverSwalError)
+        if(err instanceof SwalFormatError)
         {
           swal(err.title, err.message, err.level)
           .then(() => {
@@ -125,6 +125,9 @@ const dependencyCheckAndRun = () => {
 
   window.autoSaver = new AutoSaver();
   editor.on("change", window.autoSaver.runner.bind(window.autoSaver));
+  editor.setOptions({
+    enableLiveAutocompletion: true,
+  })
   console.log(`[AUTOSAVER] script loaded!`);
 }
 dependencyCheckAndRun();
