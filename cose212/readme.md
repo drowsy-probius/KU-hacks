@@ -20,3 +20,7 @@ document.body.appendChild(script);
 으로 추가해주면 됩니다.
 
 
+minify
+```bash
+npx minify ./cose212/autosaver.js >  ./cose212/autosaver.min.js
+```
