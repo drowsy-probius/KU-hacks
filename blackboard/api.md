@@ -87,3 +87,9 @@ payload 2
 response 2
 -> 여기에 활동 스트림 목록 담김.
 ```
+
+- 강의 세부 정보 확인
+```
+https://kulms.korea.ac.kr/learn/api/v1/courses/_{course_pk}_1
+?expand=instructorsMembership,+instructorsMembership.courseRole,+effectiveAvailability,+isChild
+```
